@@ -8,7 +8,7 @@
  * @format
  */
 
- import React from 'react';
+ import React, { useCallback, useEffect, useMemo, useState } from 'react';
  import {
    SafeAreaView,
    ScrollView,
@@ -17,6 +17,7 @@
    Text,
    useColorScheme,
    View,
+   TextInput
  } from 'react-native';
 
  import {
@@ -26,11 +27,39 @@
    LearnMoreLinks,
    ReloadInstructions,
  } from 'react-native/Libraries/NewAppScreen';
+import { Character } from './types';
 
  const Section: React.FC<{
-   title: string;
+   title: string; // props
  }> = ({children, title}) => {
    const isDarkMode = useColorScheme() === 'dark';
+
+  //  const myTitle = 'QWERTYUIO'
+
+  //  const [loading, setLoading] = useState<boolean>(false)
+  //  const [text, setText] = useState<string>('')
+
+  // useEffect(()=>{
+  //   setTimeout(() => {
+      
+  //   }, 3000);
+  //   // fetch(text)
+  // },[])
+
+  // const varr = [1,2,3,4,5,6,7,8,9,0].map((item)=><Text>{item}</Text>)
+  // const methodq = useCallback(()=>{},[])
+
+    // <View> w
+    // <Text>
+    // <Pressable>
+    // <FlatList data={["q"]} renderItem={({ item,index })=> <Text>{item}</Text>} keyExtractor={(item,index)=>string}>
+    // ScrollView
+    // <SafeAreaView>
+    // import myimage from '../'
+    // const uri = ""  
+    // <Image source={myimage} />
+    // <Image source={{ uri }} />
+ 
    return (
      <View style={styles.sectionContainer}>
        <Text
@@ -109,7 +138,7 @@
    },
    highlight: {
      fontWeight: '700',
-   },
+    },
  });
 
  export default App;
