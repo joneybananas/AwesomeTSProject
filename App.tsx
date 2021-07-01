@@ -1,144 +1,46 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
 
- import React, { useCallback, useEffect, useMemo, useState } from 'react';
- import {
-   SafeAreaView,
-   ScrollView,
-   StatusBar,
+
+import React from 'react';
+import AppNavigator from './navigation/AppNavigator';
+import {
+  SafeAreaView,
    StyleSheet,
    Text,
-   useColorScheme,
    View,
-   TextInput
- } from 'react-native';
+} from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { NavigationContainer } from '@react-navigation/native';
 
- import {
-   Colors,
-   DebugInstructions,
-   Header,
-   LearnMoreLinks,
-   ReloadInstructions,
- } from 'react-native/Libraries/NewAppScreen';
-import { Character } from './types';
+function main () {
+return(
+  <View>
+    <Text style ={styles.textstyle}>
+      Мой загрузочный экран
+    </Text>
+  </View>
+  );
+};
 
- const Section: React.FC<{
-   title: string; // props
- }> = ({children, title}) => {
-   const isDarkMode = useColorScheme() === 'dark';
+const App = ({}) => {  
+  
+  // return(
+  //   main())
 
-  //  const myTitle = 'QWERTYUIO'
+  return (AppNavigator())
 
-  //  const [loading, setLoading] = useState<boolean>(false)
-  //  const [text, setText] = useState<string>('')
+};
 
-  // useEffect(()=>{
-  //   setTimeout(() => {
-      
-  //   }, 3000);
-  //   // fetch(text)
-  // },[])
+const styles = StyleSheet.create({
+  textstyle: {
+    fontSize: 36,
+    color:"#DDDDDD",
+    textAlign : 'center'
+    
+    
+  },
+});
 
-  // const varr = [1,2,3,4,5,6,7,8,9,0].map((item)=><Text>{item}</Text>)
-  // const methodq = useCallback(()=>{},[])
 
-    // <View> w
-    // <Text>
-    // <Pressable>
-    // <FlatList data={["q"]} renderItem={({ item,index })=> <Text>{item}</Text>} keyExtractor={(item,index)=>string}>
-    // ScrollView
-    // <SafeAreaView>
-    // import myimage from '../'
-    // const uri = ""  
-    // <Image source={myimage} />
-    // <Image source={{ uri }} />
- 
-   return (
-     <View style={styles.sectionContainer}>
-       <Text
-         style={[
-           styles.sectionTitle,
-           {
-             color: isDarkMode ? Colors.white : Colors.black,
-           },
-         ]}>
-         {title}
-       </Text>
-       <Text
-         style={[
-           styles.sectionDescription,
-           {
-             color: isDarkMode ? Colors.light : Colors.dark,
-           },
-         ]}>
-         {children}
-       </Text>
-     </View>
-   );
- };
 
- const App = () => {
-   const isDarkMode = useColorScheme() === 'dark';
 
-   const backgroundStyle = {
-     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-   };
-
-   return (
-     <SafeAreaView style={backgroundStyle}>
-       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-       <ScrollView
-         contentInsetAdjustmentBehavior="automatic"
-         style={backgroundStyle}>
-         <Header />
-         <View
-           style={{
-             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-           }}>
-           <Section title="Step One">
-             Edit <Text style={styles.highlight}>App.js</Text> to change this
-             screen and then come back to see your edits.
-           </Section>
-           <Section title="See Your Changes">
-             <ReloadInstructions />
-           </Section>
-           <Section title="Debug">
-             <DebugInstructions />
-           </Section>
-           <Section title="Learn More">
-             Read the docs to discover what to do next:
-           </Section>
-           <LearnMoreLinks />
-         </View>
-       </ScrollView>
-     </SafeAreaView>
-   );
- };
-
- const styles = StyleSheet.create({
-   sectionContainer: {
-     marginTop: 32,
-     paddingHorizontal: 24,
-   },
-   sectionTitle: {
-     fontSize: 24,
-     fontWeight: '600',
-   },
-   sectionDescription: {
-     marginTop: 8,
-     fontSize: 18,
-     fontWeight: '400',
-   },
-   highlight: {
-     fontWeight: '700',
-    },
- });
-
- export default App;
+export default App;
