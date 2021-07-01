@@ -5,31 +5,41 @@ import FeedScreen from '../screens/FeedScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-import React, {Component} from 'react';
+import React, {Component, ReactElement, useEffect} from 'react';
+import { RectButton } from 'react-native-gesture-handler';
 
 
-function AppNavigator(){
+const AppNavigator = ()=>{
+
+
     return (<NavigationContainer> 
-        
-            <Tab.Navigator>
-            <Tab.Screen
+        <Stack.Navigator initialRouteName={'Launch'}>
+            <Stack.Screen name={'Launch'} component={LaunchScreen}/>
+            <Stack.Screen name={'Feed'} component={TabNavigator}/>
+        </Stack.Navigator>
             
-            name = "Feed"
-            component ={FeedScreen}
-            options ={{title: 'feed'}}
-            />
-            <Tab.Screen
-            name ="Favorite"
-            component ={FavoriteScreen}
-            options={{title:'favorite'}}
-            />
-        
-
-
-            </Tab.Navigator>
             
         
     </NavigationContainer>)
+}
+
+const TabNavigator=():ReactElement=>{
+    return <Tab.Navigator initialRouteNam='Feed'>
+    <Tab.Screen
+    
+    name = "Feed"
+    component ={FeedScreen}
+    options ={{title: 'feed'}}
+    />
+    <Tab.Screen
+    name ="Favorite"
+    component ={FavoriteScreen}
+    options={{title:'favorite'}}
+    />
+
+
+
+    </Tab.Navigator>
 }
 
 export default AppNavigator
