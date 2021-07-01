@@ -3,13 +3,14 @@ import { BottomTabBar, createBottomTabNavigator } from '@react-navigation/bottom
 import { NavigationContainer } from '@react-navigation/native';
 import FeedScreen from '../screens/FeedScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
+import LaunchScreen from '../screens/LaunchScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 import React, {Component, ReactElement, useEffect} from 'react';
 import { RectButton } from 'react-native-gesture-handler';
 
 
-const AppNavigator = ()=>{
+const AppNavigator = ():ReactElement=>{
 
 
     return (<NavigationContainer> 
@@ -17,14 +18,11 @@ const AppNavigator = ()=>{
             <Stack.Screen name={'Launch'} component={LaunchScreen}/>
             <Stack.Screen name={'Feed'} component={TabNavigator}/>
         </Stack.Navigator>
-            
-            
-        
-    </NavigationContainer>)
+        </NavigationContainer>)
 }
 
 const TabNavigator=():ReactElement=>{
-    return <Tab.Navigator initialRouteNam='Feed'>
+    return <Tab.Navigator initialRouteName='Feed'>
     <Tab.Screen
     
     name = "Feed"

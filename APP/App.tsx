@@ -1,6 +1,6 @@
 
 
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import AppNavigator from './navigation/AppNavigator';
 import {
   SafeAreaView,
@@ -11,30 +11,12 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
-function Main () {
-
-  const navigation = useNavigation()
-  useEffect(()=>{
-      setTimeout(() => {
-          navigation.reset({index: 0, routes: [{name: "Feed"}]})
-      }, 3000);
-  },[])
-
-return(
-  <View>
-    <Text style ={styles.textstyle}>
-      Мой загрузочный экран
-    </Text>
-  </View>
-  );
-};
 
 const App = ({}) => {  
   
-  // return(
-  //   main())
-
-  return  <Main/>//<AppNavigator/>
+ return(
+   <AppNavigator></AppNavigator>
+ );
 
 };
 
