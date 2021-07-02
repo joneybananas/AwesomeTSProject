@@ -15,7 +15,7 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 const App = ({}) => {  
   
  return(
-   <AppNavigator></AppNavigator>
+   <AppNavigator />
  );
 
 };

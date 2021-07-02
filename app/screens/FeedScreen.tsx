@@ -1,7 +1,7 @@
 import React from 'react'
 import {View,Text,StyleSheet} from 'react-native'
 
-const FeedScreen = () => (
+const FeedScreen = () => {return (
 <View style ={styles.constainer}>
 <Text style ={styles.textt}>
     Feed
@@ -9,7 +9,11 @@ const FeedScreen = () => (
 
 </View>
 
-)
+)}
+
+// app->services->fetchData.tsx
+
+
 
 const styles = StyleSheet.create({
 
