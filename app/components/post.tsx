@@ -1,12 +1,14 @@
 import React from "react";
+import { Character } from "../Types/types";
 
 import {View,Text, StyleSheet} from 'react-native'
-export const Post = ({title}:{title:number},{body}:{body:string}) =>{
+ const Post = React.memo((person:Character) =>(
     <View>
         <Text>
-            {title}
+            {person.id}
         </Text>
-        <Text>{body}
+        <Text>{person.name}
         </Text>
     </View>
-}
+ ));
+export default Post

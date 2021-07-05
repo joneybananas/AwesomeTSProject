@@ -28,7 +28,7 @@ const useEffectPosts = () => {
   ,[]);
     
     const onEndReached =  ()=>{
-      if (page<=36){
+      if (page<=35){
     const newPost =  fetchData<CharactersInformation>(page+1).then(ch=>{
       setPost(post?.concat(ch.results));
       setPage(page+1)

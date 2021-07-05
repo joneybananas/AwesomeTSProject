@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const FavoriteScreen = () => (
+const CharacterScreen = () => (
   <View style={styles.constainer}>
-    <Text style={styles.textt}>Favorite</Text>
+    <Text style={styles.textt}>Character</Text>
   </View>
 );
 
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default FavoriteScreen;
+export default CharacterScreen;
