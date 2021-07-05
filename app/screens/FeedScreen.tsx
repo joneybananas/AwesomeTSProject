@@ -1,32 +1,61 @@
-import React from 'react'
-import {View,Text,StyleSheet} from 'react-native'
+import React, { useState } from 'react';
+import { useCallback } from 'react';
+import { useEffect } from 'react';
+import {View, Text, StyleSheet, SafeAreaView, FlatList, ScrollView, ActivityIndicator, Image} from 'react-native';
+import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
+import { Post,} from '../components/post';
+import fetchData from '../services/fetchData';
+import useFetch from '../services/useFetch';
+import { Character, CharactersInformation } from '../Types/types';
 
-const FeedScreen = () => {return (
-<View style ={styles.constainer}>
-<Text style ={styles.textt}>
-    Feed
-</Text>
 
-</View>
 
-)}
+
+const FeedScreen = () => {
+ 
+  const{isLoading,post,onEndReached} = useFetch()
+  const keyExtractor = useCallback((mama: { id: any; }) => mama.id,[]);
+  //const keyExtractor = ch => post[ch].id.toString()
+   
+  
+  return (
+    <SafeAreaView>
+      <FlatList data={post}
+          keyExtractor={keyExtractor}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.25}
+          renderItem = {
+            ({item})=><View>
+             <Image source={{uri:item.image}} style ={{width:40,height:40}} />
+            </View>  }
+             >
+
+      </FlatList>
+
+
+    </SafeAreaView>
+  )
+};
 
 // app->services->fetchData.tsx
 
-
-
 const styles = StyleSheet.create({
-
-constainer:{
-    flex:1,
+  constainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#000000'
-},
-textt:{
-textAlign : 'center'
+    color: '#000000',
+  },
+  textt: {
+    textAlign: 'center',
+  },
+});
+export default FeedScreen;
+function id<T>(id: any) {
+  throw new Error('Function not implemented.');
 }
 
+function getArr(post: Character[] | undefined) {
+  throw new Error('Function not implemented.');
+}
 
-})
-export default FeedScreen
