@@ -25,6 +25,7 @@ const AppNavigator = (): ReactElement => {
           component={LaunchScreen}
         />
         <Stack.Screen name={'Feed'} options={{}} component={TabNavigator} />
+        <Stack.Screen name={'CharacterInfo'} component ={CharacterScreen}/>
         
       </Stack.Navigator>
     </NavigationContainer>
@@ -36,6 +37,7 @@ const TabNavigator = (): ReactElement => {
     <Tab.Navigator
       initialRouteName="Feed"
       activeColor="#fff"
+      barStyle={{backgroundColor:'#123456'}}
       // barStyle={{ backgroundColor: 'tomato' }}
     >
       <Tab.Screen
@@ -44,6 +46,7 @@ const TabNavigator = (): ReactElement => {
         options={{
           tabBarLabel: 'Home',
           tabBarColor: '#009387',
+          
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),

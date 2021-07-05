@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import {View, Text, StyleSheet, SafeAreaView, FlatList, ScrollView, ActivityIndicator, Image} from 'react-native';
 import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 import { Item } from 'react-native-paper/lib/typescript/components/List/List';
-//import { Post,} from '../components/post';
-import Post from '../components/post';
+import { Post } from '../components/post';
+
 import fetchData from '../services/fetchData';
 import useFetch from '../services/useFetch';
 import { Character, CharactersInformation } from '../Types/types';
@@ -17,6 +17,9 @@ const FeedScreen = () => {
  
   const{isLoading,post,onEndReached} = useFetch()
   const keyExtractor = useCallback((mama: { id: any; }) => mama.id,[]);
+  const renderItem = useCallback(({item})=>(
+    <Post {...item}/>
+    ),[]);
   //const keyExtractor = ch => post[ch].id.toString()
 //   ({item})=><View>
 //   <Image source={{uri:item.image}} style ={{width:40,height:40}} />
@@ -28,11 +31,7 @@ const FeedScreen = () => {
           keyExtractor={keyExtractor}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.25}
-          renderItem={({item})=>
-          <View>
-             <Image source={{uri:item.image}} style ={{width:40,height:40}} />
-          </View> 
-          }
+          renderItem={renderItem}
              >
 
       </FlatList>
