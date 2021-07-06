@@ -14,25 +14,16 @@ import {RectButton} from 'react-native-gesture-handler';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CharacterScreen from '../screens/CharacterScreen';
-
+import RootStackNavigator from './RootStackNavigator'
 const AppNavigator = (): ReactElement => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={'Launch'}>
-        <Stack.Screen
-          name={'Launch'}
-          options={{headerShown: false}}
-          component={LaunchScreen}
-        />
-        <Stack.Screen name={'Feed'} options={{}} component={TabNavigator} />
-        <Stack.Screen name={'CharacterInfo'} component ={CharacterScreen}/>
-        
-      </Stack.Navigator>
+      <RootStackNavigator />
     </NavigationContainer>
   );
 };
-
-const TabNavigator = (): ReactElement => {
+ 
+export const TabNavigator = (): ReactElement => {
   return (
     <Tab.Navigator
       initialRouteName="Feed"

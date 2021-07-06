@@ -1,4 +1,4 @@
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, StackNavigationProp} from '@react-navigation/stack';
 import React, {ReactElement} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {createNativeWrapper} from 'react-native-gesture-handler';
@@ -6,11 +6,12 @@ import {navigate} from '@react-navigation/routers/lib/typescript/src/CommonActio
 import {useNavigation} from '@react-navigation/core';
 
 import startgif from '../../app/res/start.gif';
+import { RootStackParamList } from '../navigation/types';
 
 const LaunchScreen = (): ReactElement => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   setTimeout(() => {
-    navigation.reset({index: 0, routes: [{name: 'Feed'}]});
+    navigation.reset({index: 0, routes: [{name: 'MainScreen'}]});
   }, 4500);
 
   return (
