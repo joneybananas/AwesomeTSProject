@@ -4,7 +4,7 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import FeedScreen from '../screens/FeedScreen';
+import FeedScreen from '../screens/MainScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import LaunchScreen from '../screens/LaunchScreen';
 const Stack = createStackNavigator();
@@ -15,6 +15,12 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CharacterScreen from '../screens/CharacterScreen';
 import RootStackNavigator from './RootStackNavigator'
+import { Icon } from 'react-native-vector-icons/Icon';
+
+//import { Item } from "react-native-paper/lib/typescript/components/List/List";
+
+
+
 const AppNavigator = (): ReactElement => {
   return (
     <NavigationContainer>
@@ -37,7 +43,6 @@ export const TabNavigator = (): ReactElement => {
         options={{
           tabBarLabel: 'Home',
           tabBarColor: '#009387',
-          
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 const CharacterScreen = () => (
+  
   <View style={styles.constainer}>
     <Text style={styles.textt}>Character</Text>
   </View>

@@ -11,8 +11,9 @@ import { RootStackParamList } from '../navigation/types';
 const LaunchScreen = (): ReactElement => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   setTimeout(() => {
-    navigation.reset({index: 0, routes: [{name: 'MainScreen'}]});
-  }, 4500);
+    //navigation.reset({index: 0, routes: [{name: 'MainScreen'}]});
+    navigation.navigate('MainScreen')
+  }, 500);
 
   return (
     <View

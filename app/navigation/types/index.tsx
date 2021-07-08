@@ -1,5 +1,7 @@
+import { Character } from "../../Types/types";
+
 export type RootStackParamList = {
     LaunchScreen: undefined
     MainScreen: undefined
-    CharacterScreen: { charId: number }
+    CharacterScreen: undefined //{ person:Character }
 }

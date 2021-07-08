@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { ReactElement } from 'react'
+import CharacterScreen from '../screens/CharacterScreen'
 import LaunchScreen from '../screens/LaunchScreen'
 import { TabNavigator } from './AppNavigator'
 import { RootStackParamList } from './types'
@@ -13,7 +14,9 @@ const Stack = createStackNavigator<RootStackParamList>()
       options={{headerShown: false}}
       component={LaunchScreen}
     />
-    <Stack.Screen name={'MainScreen'} options={{}} component={TabNavigator} />
+    <Stack.Screen name={'MainScreen'} options={{}} component={TabNavigator} 
+    />
+    <Stack.Screen name ={'CharacterScreen'} component ={CharacterScreen} />
      
     
   </Stack.Navigator>
