@@ -1,6 +1,8 @@
+import { useIsFocused } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { useCallback } from 'react'
 import { useEffect } from 'react'
+import { ListRenderItemInfo } from 'react-native'
 import {
   View,
   Text,
@@ -20,20 +22,22 @@ import useFetch from '../services/useFetch'
 import { Character, CharactersInformation } from '../Types/types'
 
 const MainScreen = () => {
+  const isFocused = useIsFocused()
   const { isLoading, post, onEndReached } = useFetch()
-  //const keyExtractor = useCallback((mama: { id: any; }) => mama.id,[]);
-  const keyExtractor = useCallback((mama: { id: any }) => mama.id, [])
-  //const keyExtractor = (item:Character)=>{item.id.toString()}
-  //const keyExtractor = useCallback(({item,inex}:{item:Character[],inex:number})=>(item[inex].id.toString()+'/'),[])
+
+  // const keyExtractor = useCallback((mama: { id: any }) => mama.id, [])
+  const keyExtractor = (item: Character, index: number): string =>
+    `${item.id}${index}`
+
   const renderItem = useCallback(
-    ({ item }: { item: Character }) => <Post {...item} />,
+    ({ item }: ListRenderItemInfo<Character>) => <Post person={item} />,
     []
   )
 
-  //const keyExtractor = ch => post[ch].id.toString()
-  //   ({item})=><View>
-  //   <Image source={{uri:item.image}} style ={{width:40,height:40}} />
-  //  </View>
+  // const renderItem = useCallback(
+  //   ({ item }: { item: Character }) => <Post {...item} />,
+  //   []
+  // )
 
   return (
     <SafeAreaView>

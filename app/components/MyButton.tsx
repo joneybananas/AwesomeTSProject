@@ -9,37 +9,72 @@ import { Props } from 'react-native-paper/lib/typescript/components/RadioButton/
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ReactElement } from 'react'
 import { useState } from 'react'
+import { Alert } from 'react-native'
 
-const getData = async (): Promise<number[]> => {
-  var arr: number[]
+// const getData = async (): Promise<number[]> => {
+//   var arr: number[]
 
-  arr = await AsyncStorage.getItem('arr').then((response) => {
-    if (response != null) return JSON.parse(response)
-  })
-  return arr
+//   arr = await AsyncStorage.getItem('arr').then((response) => {
+//     if (response != null) return JSON.parse(response)
+//   }).catch(error){
+//     console.log(error);
+//     )
+
+//   }
+//   return arr
+// }
+
+const getStorageData = async (): Promise<number[]> => {
+  try {
+    const favoritesIdxStr = await AsyncStorage.getItem('arr')
+    const favoritesIdx: number[] = favoritesIdxStr
+      ? JSON.parse(favoritesIdxStr)
+      : []
+    return favoritesIdx
+  } catch (error) {
+    console.error(error)
+
+    return []
+  }
 }
 
-const MyButton = (props: { charID: number }): ReactElement => {
-  const [checkedButton, setCheckedButton] = useState(false)
-  
-  getData().then((ch) => {
-    if (ch != null && ch.indexOf(props.charID) != -1) {
-      setCheckedButton(true)
-    } else {
-      setCheckedButton(false)
-    }
+interface OwnProps {
+  charID: number
+  setIsFavoriteButttonChecked?: (IsFavoriteButttonChecked: boolean) => void
+}
+
+const MyButton = ({
+  charID,
+  setIsFavoriteButttonChecked
+}: OwnProps): ReactElement => {
+  const [ischeckedButton, setCheckedButton] = useState(false)
+
+  const [favoritesIdx, setFavoritesIdx] = useState<number[]>([])
+
+  getStorageData().then((ch) => {
+    setFavoritesIdx(ch)
+    setCheckedButton(ch.indexOf(charID) != -1)
   })
 
-  if (checkedButton) {
+  const onPressLike = (): void => {
+    // favoriteCheck(charID)
+
+    if (ischeckedButton) {
+      setCheckedButton(false)
+      setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(false)
+    } else {
+      setCheckedButton(true)
+      setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(true)
+    }
+  }
+
+  if (ischeckedButton) {
     return (
       <IconButton
         icon='heart'
         size={40}
         color='red'
-        onPress={() => {
-          favoriteCheck(props.charID)
-          setCheckedButton(false)
-        }}
+        onPress={onPressLike}
         style={{ alignContent: 'stretch' }}
       />
     )
@@ -49,10 +84,7 @@ const MyButton = (props: { charID: number }): ReactElement => {
         icon='heart'
         size={40}
         color='white'
-        onPress={() => {
-          favoriteCheck(props.charID)
-          setCheckedButton(true)
-        }}
+        onPress={onPressLike}
         style={{ alignContent: 'stretch' }}
       />
     )
@@ -60,35 +92,39 @@ const MyButton = (props: { charID: number }): ReactElement => {
 }
 
 const favoriteCheck = async (charID: number) => {
-  console.log(charID)
+  // проверяет есть ли элемент в избранном и добавляет или удаляет
 
-  var arr: number[] 
+  let arr: number[]
 
   arr = await AsyncStorage.getItem('arr').then((response) => {
-    if (response != null) return JSON.parse(response)
+    return JSON.parse(response || '[]')
   })
-  if (arr == undefined){arr = []}
-  console.log(arr)
 
-  if (arr != undefined && arr.indexOf(charID) != -1) {
-    arr = arrayRemove(arr,charID)
-    await AsyncStorage.setItem('arr', JSON.stringify(arr)).then((ch) => {
-      console.log('remove from favorite')
-    })
+  if (arr == undefined) {
+    arr = []
+  }
+
+  if (arr.indexOf(charID) != -1) {
+    arr = arrayRemove(arr, charID)
+    try {
+      console.log('REMOVE', arr)
+
+      await AsyncStorage.setItem('arr', JSON.stringify(arr))
+    } catch (error) {
+      console.log(error)
+    }
   } else {
-    arr.push(Number(charID))
-
-    await AsyncStorage.setItem('arr', JSON.stringify(arr)).then((ch) => {
-      console.log('add to favorite' + charID.toString())
-    })
+    arr.push(charID)
+    try {
+      await AsyncStorage.setItem('arr', JSON.stringify(arr))
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
-function arrayRemove(arr:number[], value:number) { 
-    
-  return arr.filter(function(ele){ 
-      return ele != value; 
-  });
+function arrayRemove(arr: number[], value: number) {
+  return arr.filter((innerItem) => innerItem !== value) // not for object {} !== {}
 }
 
 export default MyButton

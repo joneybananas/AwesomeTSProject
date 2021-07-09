@@ -8,4 +8,4 @@ module.exports = {
   "jsxSingleQuote": true,
   "semi": false,
   "useTabs": false
-};
+}

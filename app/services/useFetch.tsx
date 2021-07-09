@@ -1,44 +1,31 @@
-import {useEffect} from 'react';
-import {useState} from 'react';
-import { concat } from 'react-native-reanimated';
-import {Character, CharactersInformation} from '../Types/types';
-import fetchData from './fetchData';
+import { useEffect, useState } from 'react'
+import { Character, CharactersInformation } from '../Types/types'
+import fetchData from './fetchData'
 const getArr = <T,>(elem: T): T[] => {
-  return [elem];
-};
-
+  return [elem]
+}
 
 const useEffectPosts = () => {
-  const [isLoading, setLoading] = useState(true);
-  const [post,setPost] = useState<Character[]>()
-  const [page,setPage] = useState<number>(0)
-  
-  
+  const [isLoading, setLoading] = useState(true)
+  const [post, setPost] = useState<Character[]>([])
+  const [page, setPage] = useState<number>(1)
+  const [maxpages, setMaxpages] = useState<number>(1)
 
   useEffect(() => {
-    fetchData<CharactersInformation>('')
-      .then(ch => {
-          setLoading(false)
-          setPost(ch.results)}
-          )        
-      
-    setPage(1)
-    }
-        
-  ,[]);
-    
-    const onEndReached =  ()=>{
-      if (page<=35){
-    const newPost =  fetchData<CharactersInformation>(page+1).then(ch=>{
-      setPost(post?.concat(ch.results));
-      setPage(page+1)
-      
+    fetchData<CharactersInformation>(page).then((ch) => {
+      setMaxpages(ch.info.pages)
+      setPost((prevPost) => prevPost.concat(ch.results))
+      setLoading(false)
     })
-    }
-    }
-  
+  }, [page])
 
-   return {isLoading,post,onEndReached};
-};
+  const onEndReached = () => {
+    if (page <= maxpages) {
+      setPage(page + 1)
+    }
+  }
 
-export default useEffectPosts;
+  return { isLoading, post, onEndReached }
+}
+
+export default useEffectPosts
