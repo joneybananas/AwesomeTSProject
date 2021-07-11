@@ -18,10 +18,11 @@ import { useState } from 'react'
 interface OwnProps {
   person: Character
   setIsFavoriteButttonChecked?: (IsFavoriteButttonChecked: boolean) => void
+  update?: boolean
 }
 
 export const Post = React.memo(
-  ({ setIsFavoriteButttonChecked, person }: OwnProps) => {
+  ({ setIsFavoriteButttonChecked, person, update }: OwnProps) => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
     //
     const getSingleCharacter = () => {
@@ -30,31 +31,53 @@ export const Post = React.memo(
     const [btn, btnch] = useState()
 
     return (
-      <TouchableOpacity onPress={getSingleCharacter}>
-        <View
-          style={{
-            flexDirection: 'row',
-            padding: 10,
-            marginBottom: 10,
-            backgroundColor: '#67c26e',
-            display: 'flex'
-          }}>
-          <Image
-            source={{ uri: person.image }}
-            style={{ width: 80, height: 80, borderRadius: 80 }}
-          />
+      <TouchableOpacity style={styles.background} onPress={getSingleCharacter}>
+        <View style={styles.constainer}>
+          <Image source={{ uri: person.image }} style={styles.imagestyle} />
 
-          <View style={{ width: 200, flex: 1 }}>
-            <Text style={{ fontSize: 20 }}>{person.name} </Text>
-            <Text> {person.status}</Text>
+          <View style={styles.viewStyle}>
+            <Text style={styles.nameText}>{person.name} </Text>
+            <Text style={styles.statusText}>{person.status}</Text>
           </View>
 
-          <MyButton
-            charID={person.id}
-            setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
-          />
+          {
+            <MyButton
+              charID={person.id}
+              setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
+              update={update}
+            />
+          }
         </View>
       </TouchableOpacity>
     )
   }
 )
+
+const styles = StyleSheet.create({
+  background: {
+    backgroundColor: '#15105E'
+  },
+  constainer: {
+    flexDirection: 'row',
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: '#9ee7ff',
+    borderRadius: 50,
+    display: 'flex'
+  },
+  imagestyle: {
+    width: 80,
+    height: 80,
+    borderRadius: 80
+  },
+  viewStyle: {
+    width: 200,
+    flex: 1
+  },
+  nameText: {
+    fontSize: 20,
+    fontStyle: 'normal',
+    fontFamily: 'serif'
+  },
+  statusText: { marginLeft: 10 }
+})

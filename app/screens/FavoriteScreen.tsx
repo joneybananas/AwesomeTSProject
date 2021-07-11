@@ -16,21 +16,46 @@ const FavoriteScreen = () => {
   const [isFavoriteButttonChecked, setIsFavoriteButttonChecked] =
     useState(false)
 
+  const keyExtractor = (item: Character, index: number): string =>
+    `${item.id}/${index}`
+
   const isFocused = useIsFocused()
+
+  useEffect(() => {
+    console.log(isFavoriteButttonChecked, isFocused)
+
+    const getFavoritesIdx = async () => {
+      try {
+        const favoritesIdx = await getStorageData()
+        console.log('GET', favoritesIdx)
+        const favoritesChs = await fetchData<Character[]>(favoritesIdx)
+
+        setPost(favoritesChs)
+
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        console.error(error)
+        setPost([])
+      }
+    }
+
+    //isFocused && getFavoritesIdx()
+    isFavoriteButttonChecked && getFavoritesIdx()
+  }, [isFocused, isFavoriteButttonChecked])
 
   //AsyncStorage.
 
-  const keyExtractor = useCallback((mama: { id: any }) => mama.id, [])
   const getStorageData = async (): Promise<number[]> => {
     try {
       const favoritesIdxStr = await AsyncStorage.getItem('arr')
       const favoritesIdx: number[] = favoritesIdxStr
         ? JSON.parse(favoritesIdxStr)
         : []
-      setLoading(false)
+      //setLoading(false)
       return favoritesIdx
     } catch (error) {
-      setLoading(false)
+      //setLoading(false)
       console.error(error)
 
       return []
@@ -44,29 +69,8 @@ const FavoriteScreen = () => {
         setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
       />
     ),
-    []
+    [isFavoriteButttonChecked]
   )
-
-  useEffect(() => {
-    console.log(isFavoriteButttonChecked, isFocused)
-
-    const getFavoritesIdx = async () => {
-      try {
-        const favoritesIdx = await getStorageData()
-        console.log('GET', favoritesIdx)
-
-        const favoritesChs = await fetchData<Character[]>(favoritesIdx)
-        setPost(favoritesChs)
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
-        console.error(error)
-        setPost([])
-      }
-    }
-
-    isFocused && getFavoritesIdx()
-  }, [isFocused, isFavoriteButttonChecked])
 
   //const arr: number[] = getArr<number>(qwe.arguments)
 
@@ -86,23 +90,22 @@ const FavoriteScreen = () => {
 
   if (loading) {
     return <ActivityIndicator />
+  } else {
+    return (
+      <SafeAreaView style={styles.background}>
+        <FlatList
+          style={styles.background}
+          data={post}
+          keyExtractor={keyExtractor}
+          refreshing={false}
+          onRefresh={() => {}}
+          //onEndReached={onEndReached}
+          //onEndReachedThreshold={0.25}
+          renderItem={renderItem}
+        />
+      </SafeAreaView>
+    )
   }
-
-  return (
-    <SafeAreaView>
-      <FlatList
-        data={post}
-        keyExtractor={keyExtractor}
-        refreshing={false}
-        onRefresh={() => {
-          //
-        }}
-        //onEndReached={onEndReached}
-        //onEndReachedThreshold={0.25}
-        renderItem={renderItem}
-      />
-    </SafeAreaView>
-  )
 }
 
 const styles = StyleSheet.create({
@@ -114,6 +117,10 @@ const styles = StyleSheet.create({
   },
   textt: {
     textAlign: 'center'
+  },
+  background: {
+    flex: 1,
+    backgroundColor: '#15105E'
   }
 })
 export default FavoriteScreen

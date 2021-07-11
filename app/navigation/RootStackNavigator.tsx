@@ -15,7 +15,11 @@ const RootStackNavigator = (): ReactElement => {
         options={{ headerShown: false }}
         component={LaunchScreen}
       />
-      <Stack.Screen name={'MainScreen'} options={{}} component={TabNavigator} />
+      <Stack.Screen
+        name={'MainScreen'}
+        options={{ headerShown: false }}
+        component={TabNavigator}
+      />
       <Stack.Screen name={'CharacterScreen'} component={CharacterScreen} />
     </Stack.Navigator>
   )

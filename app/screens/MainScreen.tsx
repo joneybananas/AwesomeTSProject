@@ -1,5 +1,6 @@
 import { useIsFocused } from '@react-navigation/native'
 import React, { useState } from 'react'
+import { useMemo } from 'react'
 import { useCallback } from 'react'
 import { useEffect } from 'react'
 import { ListRenderItemInfo } from 'react-native'
@@ -24,13 +25,16 @@ import { Character, CharactersInformation } from '../Types/types'
 const MainScreen = () => {
   const isFocused = useIsFocused()
   const { isLoading, post, onEndReached } = useFetch()
+  console.log(isFocused)
 
   // const keyExtractor = useCallback((mama: { id: any }) => mama.id, [])
   const keyExtractor = (item: Character, index: number): string =>
     `${item.id}${index}`
 
   const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<Character>) => <Post person={item} />,
+    ({ item }: ListRenderItemInfo<Character>) => (
+      <Post person={item} update={isFocused} />
+    ),
     []
   )
 
@@ -38,17 +42,20 @@ const MainScreen = () => {
   //   ({ item }: { item: Character }) => <Post {...item} />,
   //   []
   // )
-
-  return (
-    <SafeAreaView>
-      <FlatList
-        data={post}
-        keyExtractor={keyExtractor}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.25}
-        renderItem={renderItem}></FlatList>
-    </SafeAreaView>
-  )
+  if (isLoading) {
+    return <ActivityIndicator />
+  } else {
+    return (
+      <SafeAreaView>
+        <FlatList
+          data={post}
+          keyExtractor={keyExtractor}
+          onEndReached={onEndReached}
+          onEndReachedThreshold={0.25}
+          renderItem={renderItem}></FlatList>
+      </SafeAreaView>
+    )
+  }
 }
 
 // app->services->fetchData.tsx

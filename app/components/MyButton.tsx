@@ -10,6 +10,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { ReactElement } from 'react'
 import { useState } from 'react'
 import { Alert } from 'react-native'
+import { useEffect } from 'react'
+import { useCallback } from 'react'
+import { useMemo } from 'react'
 
 // const getData = async (): Promise<number[]> => {
 //   var arr: number[]
@@ -27,9 +30,8 @@ import { Alert } from 'react-native'
 const getStorageData = async (): Promise<number[]> => {
   try {
     const favoritesIdxStr = await AsyncStorage.getItem('arr')
-    const favoritesIdx: number[] = favoritesIdxStr
-      ? JSON.parse(favoritesIdxStr)
-      : []
+    const favoritesIdx: number[] =
+      favoritesIdxStr != null ? JSON.parse(favoritesIdxStr) : []
     return favoritesIdx
   } catch (error) {
     console.error(error)
@@ -41,30 +43,41 @@ const getStorageData = async (): Promise<number[]> => {
 interface OwnProps {
   charID: number
   setIsFavoriteButttonChecked?: (IsFavoriteButttonChecked: boolean) => void
+  update?: boolean
 }
 
 const MyButton = ({
   charID,
-  setIsFavoriteButttonChecked
+  setIsFavoriteButttonChecked,
+  update
 }: OwnProps): ReactElement => {
   const [ischeckedButton, setCheckedButton] = useState(false)
 
   const [favoritesIdx, setFavoritesIdx] = useState<number[]>([])
-
-  getStorageData().then((ch) => {
-    setFavoritesIdx(ch)
-    setCheckedButton(ch.indexOf(charID) != -1)
+  useEffect(() => {
+    console.log(update)
+    getStorageData().then((ch) => {
+      if (ch.indexOf(charID) != -1) {
+        setCheckedButton(true)
+      } else {
+        setCheckedButton(false)
+      }
+    })
   })
 
   const onPressLike = (): void => {
-    // favoriteCheck(charID)
+    //favoriteCheck(charID)
 
     if (ischeckedButton) {
-      setCheckedButton(false)
-      setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(false)
+      favoriteChange(charID).then((iter) => {
+        setCheckedButton(false)
+        setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(false)
+      })
     } else {
-      setCheckedButton(true)
-      setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(true)
+      favoriteChange(charID).then((iter) => {
+        setCheckedButton(true)
+        setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(true)
+      })
     }
   }
 
@@ -73,7 +86,7 @@ const MyButton = ({
       <IconButton
         icon='heart'
         size={40}
-        color='red'
+        color='#6C67C7'
         onPress={onPressLike}
         style={{ alignContent: 'stretch' }}
       />
@@ -83,7 +96,7 @@ const MyButton = ({
       <IconButton
         icon='heart'
         size={40}
-        color='white'
+        color='#93A9BF'
         onPress={onPressLike}
         style={{ alignContent: 'stretch' }}
       />
@@ -91,7 +104,7 @@ const MyButton = ({
   }
 }
 
-const favoriteCheck = async (charID: number) => {
+const favoriteChange = async (charID: number) => {
   // проверяет есть ли элемент в избранном и добавляет или удаляет
 
   let arr: number[]
@@ -99,10 +112,6 @@ const favoriteCheck = async (charID: number) => {
   arr = await AsyncStorage.getItem('arr').then((response) => {
     return JSON.parse(response || '[]')
   })
-
-  if (arr == undefined) {
-    arr = []
-  }
 
   if (arr.indexOf(charID) != -1) {
     arr = arrayRemove(arr, charID)
@@ -116,6 +125,7 @@ const favoriteCheck = async (charID: number) => {
   } else {
     arr.push(charID)
     try {
+      console.log('add', arr)
       await AsyncStorage.setItem('arr', JSON.stringify(arr))
     } catch (error) {
       console.log(error)
