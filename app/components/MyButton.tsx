@@ -55,7 +55,7 @@ const MyButton = ({
 
   const [favoritesIdx, setFavoritesIdx] = useState<number[]>([])
   useEffect(() => {
-    console.log(update)
+    //console.log(update)
     getStorageData().then((ch) => {
       if (ch.indexOf(charID) != -1) {
         setCheckedButton(true)

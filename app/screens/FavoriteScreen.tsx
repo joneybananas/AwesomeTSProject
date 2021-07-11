@@ -40,7 +40,7 @@ const FavoriteScreen = () => {
       }
     }
 
-    //isFocused && getFavoritesIdx()
+    isFocused && getFavoritesIdx()
     isFavoriteButttonChecked && getFavoritesIdx()
   }, [isFocused, isFavoriteButttonChecked])
 
@@ -69,7 +69,7 @@ const FavoriteScreen = () => {
         setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
       />
     ),
-    [isFavoriteButttonChecked]
+    []
   )
 
   //const arr: number[] = getArr<number>(qwe.arguments)

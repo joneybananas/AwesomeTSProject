@@ -25,7 +25,7 @@ import { Character, CharactersInformation } from '../Types/types'
 const MainScreen = () => {
   const isFocused = useIsFocused()
   const { isLoading, post, onEndReached } = useFetch()
-  console.log(isFocused)
+  //console.log(isFocused)
 
   // const keyExtractor = useCallback((mama: { id: any }) => mama.id, [])
   const keyExtractor = (item: Character, index: number): string =>
