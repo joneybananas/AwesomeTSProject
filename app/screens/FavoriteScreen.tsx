@@ -72,22 +72,6 @@ const FavoriteScreen = () => {
     />
   )
 
-  //const arr: number[] = getArr<number>(qwe.arguments)
-
-  // useEffect(() => {
-  //   getStorageData()
-  //     .then((res) => {
-  //       b = res
-  //     })
-  //     .then(() => {
-  //       console.log(b)
-
-  //       fetchData<Character[]>(b).then((ch) => {
-  //         setPost(ch)
-  //       })
-  //     })
-  // }, [])
-
   if (loading) {
     return <ActivityIndicator />
   } else {
@@ -99,8 +83,6 @@ const FavoriteScreen = () => {
           keyExtractor={keyExtractor}
           refreshing={false}
           onRefresh={getFavoritesIdx}
-          //onEndReached={onEndReached}
-          //onEndReachedThreshold={0.25}
           renderItem={renderItem}
         />
       </SafeAreaView>

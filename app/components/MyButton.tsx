@@ -27,19 +27,6 @@ import { useMemo } from 'react'
 //   return arr
 // }
 
-const getStorageData = async (): Promise<number[]> => {
-  try {
-    const favoritesIdxStr = await AsyncStorage.getItem('arr')
-    const favoritesIdx: number[] =
-      favoritesIdxStr != null ? JSON.parse(favoritesIdxStr) : []
-    return favoritesIdx
-  } catch (error) {
-    console.error(error)
-
-    return []
-  }
-}
-
 interface OwnProps {
   charID: number
   setIsFavoriteButttonChecked?: (IsFavoriteButttonChecked: boolean) => void
@@ -51,31 +38,89 @@ const MyButton = ({
   setIsFavoriteButttonChecked,
   update
 }: OwnProps): ReactElement => {
+  useEffect(() => {
+    getStorageData().then((request) => {
+      if (checkIdxInArr(request, charID)) {
+        setCheckedButton(true)
+      }
+      setFavoritesIdx(request)
+    })
+    console.log('start ' + favoritesIdxx)
+  }, [])
+
   const [ischeckedButton, setCheckedButton] = useState(false)
 
-  const [favoritesIdx, setFavoritesIdx] = useState<number[]>([])
+  const [favoritesIdxx, setFavoritesIdx] = useState<number[]>([])
 
-  getStorageData().then((ch) => {
-    if (ch.indexOf(charID) != -1) {
-      setCheckedButton(true)
-    } else {
-      setCheckedButton(false)
+  const getStorageData = async (): Promise<number[]> => {
+    try {
+      const favoritesIdxStr = await AsyncStorage.getItem('arr')
+      const favoritesIdx: number[] =
+        favoritesIdxStr != null ? JSON.parse(favoritesIdxStr) : []
+      return favoritesIdx
+    } catch (error) {
+      console.error(error)
+
+      return []
     }
-  })
+  }
+
+  const checkIdxInArr = (arr: number[], Id: number): boolean => {
+    if (arr.indexOf(charID) != -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+  const addArrElem = (Id: number): number[] => {
+    const arr = favoritesIdxx.concat(Id)
+
+    return arr
+  }
+  function arrayRemoveItem(arr: number[], value: number) {
+    return arr.filter(function (ele) {
+      return ele != value
+    })
+  }
+  const wrightToStorage = async (
+    arr: number[]
+    // callback: (isSuccesed: boolean) => void
+  ) => {
+    console.log('wright ' + arr)
+    try {
+      await AsyncStorage.setItem('arr', JSON.stringify(arr))
+      // callback(true)
+    } catch (error) {
+      // callback(false)
+      console.log(error)
+    }
+  }
+
+  const favoriteChange = () => {
+    if (checkIdxInArr(favoritesIdxx, charID)) {
+      wrightToStorage(arrayRemoveItem(favoritesIdxx, charID))
+    } else {
+      wrightToStorage([...favoritesIdxx, charID])
+    }
+    getStorageData().then((request) => {
+      setFavoritesIdx(request)
+    })
+  }
 
   const onPressLike = (): void => {
+    console.log(favoritesIdxx)
     //favoriteCheck(charID)
 
     if (ischeckedButton) {
-      favoriteChange(charID, (isSucces) => {
-        setCheckedButton(false)
-        setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(false)
-      })
+      favoriteChange()
+      setCheckedButton(false)
+      console.log('massiv ' + favoritesIdxx)
+      setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(false)
     } else {
-      favoriteChange(charID, (isSucces) => {
-        setCheckedButton(true)
-        setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(true)
-      })
+      favoriteChange()
+      setCheckedButton(true)
+      console.log('massiv ' + favoritesIdxx)
+      setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(true)
     }
   }
 
@@ -100,49 +145,6 @@ const MyButton = ({
       />
     )
   }
-}
-
-const favoriteChange = async (
-  charID: number,
-  callback: (isSuccesed: boolean) => void
-) => {
-  // проверяет есть ли элемент в избранном и добавляет или удаляет
-
-  let arr: number[] = []
-  try {
-    arr = await AsyncStorage.getItem('arr').then((response) => {
-      return JSON.parse(response || '[]')
-    })
-  } catch (error) {
-    console.log(error)
-  }
-
-  if (arr.indexOf(charID) != -1) {
-    arr = arrayRemove(arr, charID)
-    try {
-      console.log('REMOVE', arr)
-
-      await AsyncStorage.setItem('arr', JSON.stringify(arr))
-      callback(true)
-    } catch (error) {
-      callback(false)
-      console.log(error)
-    }
-  } else {
-    arr.push(charID)
-    try {
-      console.log('add', arr)
-      await AsyncStorage.setItem('arr', JSON.stringify(arr))
-      callback(true)
-    } catch (error) {
-      console.log(error)
-      callback(false)
-    }
-  }
-}
-
-function arrayRemove(arr: number[], value: number) {
-  return arr.filter((innerItem) => innerItem !== value) // not for object {} !== {}
 }
 
 export default MyButton
