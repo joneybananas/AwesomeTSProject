@@ -4,7 +4,7 @@ import { IconButton } from 'react-native-paper'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Item } from 'react-native-paper/lib/typescript/components/List/List'
-import { color } from 'react-native-reanimated'
+import { call, color } from 'react-native-reanimated'
 import { Props } from 'react-native-paper/lib/typescript/components/RadioButton/RadioButtonItem'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ReactElement } from 'react'
@@ -54,27 +54,25 @@ const MyButton = ({
   const [ischeckedButton, setCheckedButton] = useState(false)
 
   const [favoritesIdx, setFavoritesIdx] = useState<number[]>([])
-  useEffect(() => {
-    //console.log(update)
-    getStorageData().then((ch) => {
-      if (ch.indexOf(charID) != -1) {
-        setCheckedButton(true)
-      } else {
-        setCheckedButton(false)
-      }
-    })
+
+  getStorageData().then((ch) => {
+    if (ch.indexOf(charID) != -1) {
+      setCheckedButton(true)
+    } else {
+      setCheckedButton(false)
+    }
   })
 
   const onPressLike = (): void => {
     //favoriteCheck(charID)
 
     if (ischeckedButton) {
-      favoriteChange(charID).then((iter) => {
+      favoriteChange(charID, (isSucces) => {
         setCheckedButton(false)
         setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(false)
       })
     } else {
-      favoriteChange(charID).then((iter) => {
+      favoriteChange(charID, (isSucces) => {
         setCheckedButton(true)
         setIsFavoriteButttonChecked && setIsFavoriteButttonChecked(true)
       })
@@ -104,14 +102,20 @@ const MyButton = ({
   }
 }
 
-const favoriteChange = async (charID: number) => {
+const favoriteChange = async (
+  charID: number,
+  callback: (isSuccesed: boolean) => void
+) => {
   // проверяет есть ли элемент в избранном и добавляет или удаляет
 
-  let arr: number[]
-
-  arr = await AsyncStorage.getItem('arr').then((response) => {
-    return JSON.parse(response || '[]')
-  })
+  let arr: number[] = []
+  try {
+    arr = await AsyncStorage.getItem('arr').then((response) => {
+      return JSON.parse(response || '[]')
+    })
+  } catch (error) {
+    console.log(error)
+  }
 
   if (arr.indexOf(charID) != -1) {
     arr = arrayRemove(arr, charID)
@@ -119,7 +123,9 @@ const favoriteChange = async (charID: number) => {
       console.log('REMOVE', arr)
 
       await AsyncStorage.setItem('arr', JSON.stringify(arr))
+      callback(true)
     } catch (error) {
+      callback(false)
       console.log(error)
     }
   } else {
@@ -127,8 +133,10 @@ const favoriteChange = async (charID: number) => {
     try {
       console.log('add', arr)
       await AsyncStorage.setItem('arr', JSON.stringify(arr))
+      callback(true)
     } catch (error) {
       console.log(error)
+      callback(false)
     }
   }
 }

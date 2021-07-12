@@ -20,28 +20,31 @@ const FavoriteScreen = () => {
     `${item.id}/${index}`
 
   const isFocused = useIsFocused()
+  const getFavoritesIdx = async () => {
+    try {
+      const favoritesIdx = await getStorageData()
+      console.log('GET', favoritesIdx)
+      const favoritesChs = await fetchData<Character[]>(favoritesIdx)
+      if (Array.isArray(favoritesChs)) {
+        setPost(favoritesChs)
+      } else {
+        setPost([favoritesChs])
+      }
+
+      //console.log(favoritesChs)
+
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      console.error(error)
+      setPost([])
+    }
+  }
 
   useEffect(() => {
     console.log(isFavoriteButttonChecked, isFocused)
-
-    const getFavoritesIdx = async () => {
-      try {
-        const favoritesIdx = await getStorageData()
-        console.log('GET', favoritesIdx)
-        const favoritesChs = await fetchData<Character[]>(favoritesIdx)
-
-        setPost(favoritesChs)
-
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
-        console.error(error)
-        setPost([])
-      }
-    }
-
-    isFocused && getFavoritesIdx()
-    isFavoriteButttonChecked && getFavoritesIdx()
+    getFavoritesIdx
+    ;(isFocused || isFavoriteButttonChecked) && getFavoritesIdx()
   }, [isFocused, isFavoriteButttonChecked])
 
   //AsyncStorage.
@@ -62,14 +65,11 @@ const FavoriteScreen = () => {
     }
   }
 
-  const renderItem = useCallback(
-    ({ item }: { item: Character }) => (
-      <Post
-        person={item}
-        setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
-      />
-    ),
-    []
+  const renderItem = ({ item }: { item: Character }) => (
+    <Post
+      person={item}
+      setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
+    />
   )
 
   //const arr: number[] = getArr<number>(qwe.arguments)
@@ -98,7 +98,7 @@ const FavoriteScreen = () => {
           data={post}
           keyExtractor={keyExtractor}
           refreshing={false}
-          onRefresh={() => {}}
+          onRefresh={getFavoritesIdx}
           //onEndReached={onEndReached}
           //onEndReachedThreshold={0.25}
           renderItem={renderItem}

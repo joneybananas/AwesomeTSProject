@@ -22,6 +22,7 @@ const fetchData = <T,>(
   }
 
   console.log(url)
+
   return fetch(url, requestInit) // Promise
     .then((response) => response.json() as Promise<T>) // response->Promise
     .then((responseJSON) => {

@@ -49,6 +49,7 @@ const MainScreen = () => {
       <SafeAreaView>
         <FlatList
           data={post}
+          updateCellsBatchingPeriod={50}
           keyExtractor={keyExtractor}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.25}
