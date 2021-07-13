@@ -16,6 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import CharacterScreen from '../screens/CharacterScreen'
 import RootStackNavigator from './RootStackNavigator'
 import { Icon } from 'react-native-vector-icons/Icon'
+import { StyleSheet } from 'react-native'
 
 //import { Item } from "react-native-paper/lib/typescript/components/List/List";
 
@@ -39,10 +40,14 @@ export const TabNavigator = (): ReactElement => {
         name='Feed'
         component={FeedScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Characters',
           tabBarColor: '#009387',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name='home' color={color} size={26} />
+            <MaterialCommunityIcons
+              name='format-list-bulleted'
+              color={color}
+              size={26}
+            />
           )
         }}
       />

@@ -13,19 +13,7 @@ import { Alert } from 'react-native'
 import { useEffect } from 'react'
 import { useCallback } from 'react'
 import { useMemo } from 'react'
-
-// const getData = async (): Promise<number[]> => {
-//   var arr: number[]
-
-//   arr = await AsyncStorage.getItem('arr').then((response) => {
-//     if (response != null) return JSON.parse(response)
-//   }).catch(error){
-//     console.log(error);
-//     )
-
-//   }
-//   return arr
-// }
+import { StyleSheet } from 'react-native'
 
 const getStorageData = async (): Promise<number[]> => {
   try {
@@ -64,8 +52,6 @@ const MyButton = ({
   })
 
   const onPressLike = (): void => {
-    //favoriteCheck(charID)
-
     if (ischeckedButton) {
       favoriteChange(charID, (isSucces) => {
         setCheckedButton(false)
@@ -86,7 +72,7 @@ const MyButton = ({
         size={40}
         color='#6C67C7'
         onPress={onPressLike}
-        style={{ alignContent: 'stretch' }}
+        style={styles.MyButton}
       />
     )
   } else {
@@ -96,7 +82,7 @@ const MyButton = ({
         size={40}
         color='#93A9BF'
         onPress={onPressLike}
-        style={{ alignContent: 'stretch' }}
+        style={styles.MyButton}
       />
     )
   }
@@ -109,40 +95,32 @@ const favoriteChange = async (
   // проверяет есть ли элемент в избранном и добавляет или удаляет
 
   let arr: number[] = []
-  try {
-    arr = await AsyncStorage.getItem('arr').then((response) => {
-      return JSON.parse(response || '[]')
-    })
-  } catch (error) {
-    console.log(error)
-  }
+  arr = await getStorageData()
 
   if (arr.indexOf(charID) != -1) {
     arr = arrayRemove(arr, charID)
-    try {
-      console.log('REMOVE', arr)
-
-      await AsyncStorage.setItem('arr', JSON.stringify(arr))
-      callback(true)
-    } catch (error) {
-      callback(false)
-      console.log(error)
-    }
+    console.log('remove ', arr)
+    await wtightToStorage(arr)
+    callback(true)
   } else {
     arr.push(charID)
-    try {
-      console.log('add', arr)
-      await AsyncStorage.setItem('arr', JSON.stringify(arr))
-      callback(true)
-    } catch (error) {
-      console.log(error)
-      callback(false)
-    }
+    console.log('add', arr)
+    await wtightToStorage(arr)
+    callback(true)
   }
 }
 
-function arrayRemove(arr: number[], value: number) {
+const arrayRemove = (arr: number[], value: number) => {
   return arr.filter((innerItem) => innerItem !== value) // not for object {} !== {}
 }
+const wtightToStorage = async (arr: number[]) => {
+  await AsyncStorage.setItem('arr', JSON.stringify(arr))
+}
+
+const styles = StyleSheet.create({
+  MyButton: {
+    alignContent: 'stretch'
+  }
+})
 
 export default MyButton

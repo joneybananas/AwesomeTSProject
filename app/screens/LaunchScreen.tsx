@@ -8,25 +8,18 @@ import { createNativeWrapper } from 'react-native-gesture-handler'
 import { navigate } from '@react-navigation/routers/lib/typescript/src/CommonActions'
 import { useNavigation } from '@react-navigation/core'
 
-import startgif from '../../app/res/start.gif'
+import startgif from '../../app/res/Rick.gif'
 import { RootStackParamList } from '../navigation/types'
 
 const LaunchScreen = (): ReactElement => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>()
   setTimeout(() => {
     navigation.reset({ index: 0, routes: [{ name: 'MainScreen' }] })
-    //navigation.navigate('MainScreen')
-  }, 500)
+  }, 5000)
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'red'
-      }}>
-      <Image source={startgif} style={{ flex: 1 }} />
+    <View style={styles.constainer}>
+      <Image source={startgif} style={styles.gif} />
     </View>
   )
 }
@@ -38,8 +31,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     color: '#000000'
   },
-  textt: {
-    textAlign: 'center'
-  }
+  gif: {}
 })
 export default LaunchScreen

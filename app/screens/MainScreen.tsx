@@ -25,29 +25,20 @@ import { Character, CharactersInformation } from '../Types/types'
 const MainScreen = () => {
   const isFocused = useIsFocused()
   const { isLoading, post, onEndReached } = useFetch()
-  //console.log(isFocused)
-
-  // const keyExtractor = useCallback((mama: { id: any }) => mama.id, [])
   const keyExtractor = (item: Character, index: number): string =>
     `${item.id}${index}`
 
-  const renderItem = useCallback(
-    ({ item }: ListRenderItemInfo<Character>) => (
-      <Post person={item} update={isFocused} />
-    ),
-    []
+  const renderItem = ({ item }: ListRenderItemInfo<Character>) => (
+    <Post person={item} update={isFocused} />
   )
 
-  // const renderItem = useCallback(
-  //   ({ item }: { item: Character }) => <Post {...item} />,
-  //   []
-  // )
   if (isLoading) {
     return <ActivityIndicator />
   } else {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.constainer}>
         <FlatList
+          style={styles.list}
           data={post}
           updateCellsBatchingPeriod={50}
           keyExtractor={keyExtractor}
@@ -64,9 +55,13 @@ const MainScreen = () => {
 const styles = StyleSheet.create({
   constainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#000000'
+    backgroundColor: '#1A2E41'
+  },
+  list: {
+    paddingTop: 5,
+    //paddingEnd:5,
+    padding: 5,
+    backgroundColor: '#1A2E41'
   },
   textt: {
     textAlign: 'center'

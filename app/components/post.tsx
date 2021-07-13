@@ -13,8 +13,6 @@ import { RootStackParamList } from '../navigation/types'
 import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 
-// interface {person, (checkedButton)=>void }
-
 interface OwnProps {
   person: Character
   setIsFavoriteButttonChecked?: (IsFavoriteButttonChecked: boolean) => void
@@ -37,7 +35,12 @@ export const Post = React.memo(
 
           <View style={styles.viewStyle}>
             <Text style={styles.nameText}>{person.name} </Text>
-            <Text style={styles.statusText}>{person.status}</Text>
+            <Text
+              style={
+                person.status === 'Alive' ? styles.AliveText : styles.DeadText
+              }>
+              {person.status}
+            </Text>
           </View>
 
           {
@@ -55,7 +58,7 @@ export const Post = React.memo(
 
 const styles = StyleSheet.create({
   background: {
-    backgroundColor: '#15105E'
+    backgroundColor: '#1A2E41'
   },
   constainer: {
     flexDirection: 'row',
@@ -77,7 +80,8 @@ const styles = StyleSheet.create({
   nameText: {
     fontSize: 20,
     fontStyle: 'normal',
-    fontFamily: 'serif'
+    fontFamily: 'lucida grande'
   },
-  statusText: { marginLeft: 10 }
+  AliveText: { marginLeft: 10, color: '#6C67C7', fontWeight: 'bold' },
+  DeadText: { marginLeft: 10, color: '#93A9BF', fontWeight: 'bold' }
 })

@@ -10,15 +10,10 @@ import {
   ActivityIndicatorComponent,
   ActivityIndicator
 } from 'react-native'
-//import { Image } from 'react-native-paper/lib/typescript/components/Avatar/Avatar'
+
 import { RootStackParamList } from '../navigation/types'
 import fetchData from '../services/fetchData'
 import { Character } from '../Types/types'
-
-interface OwnProps {
-  person: Character
-  //   //setIsFavoriteButttonChecked?: (IsFavoriteButttonChecked: boolean) => void
-}
 
 const CharacterScreen = () => {
   const {
@@ -41,12 +36,10 @@ const CharacterScreen = () => {
   if (char) {
     return (
       <View style={styles.mainView}>
+        <Text style={styles.nameText}>{char.name}</Text>
         <View style={styles.constainer}>
           <Image source={{ uri: char.image }} style={styles.imagestyle}></Image>
-          <View style={styles.charHead}>
-            <Text style={styles.nameText}>{char.name}</Text>
-            <Text style={styles.statusText}> {char.status}</Text>
-          </View>
+          <Text style={styles.statusText}> {char.status}</Text>
         </View>
         <View style={styles.propertyView}>
           <Text style={styles.headerText}>{'Species: '}</Text>
@@ -81,19 +74,22 @@ const styles = StyleSheet.create({
     //flexGrow: 1,
     padding: 10,
 
-    backgroundColor: '#15105E',
+    backgroundColor: '#1A2E41',
     //borderRadius: 50,
     display: 'flex'
   },
   charHead: {
-    flexGrow: 1
+    flexGrow: 1,
+    flex: 1
   },
   statusText: {
     color: 'white',
+    flex: 1,
     //backgroundColor: '#15105E',
+    textAlignVertical: 'center',
     textAlign: 'right',
     alignItems: 'flex-end',
-    fontSize: 15,
+    fontSize: 30,
     marginEnd: 20
   },
   propertyView: {
@@ -101,26 +97,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     display: 'flex',
     height: 60,
-    backgroundColor: '#15105E',
+    backgroundColor: '#1A2E41',
     borderWidth: 2,
-    borderColor: '#8058AD'
+
+    borderTopColor: '#123456',
+    borderBottomColor: '#123456'
   },
   headerText: {
     marginLeft: 5,
     fontSize: 18,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'lucida grande'
   },
   propertyText: {
     fontSize: 18,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'lucida grande'
   },
   imagestyle: {
-    width: 100,
-    height: 100
+    width: 120,
+    height: 120
   },
   nameText: {
+    height: 50,
     color: 'white',
+    textAlignVertical: 'center',
+    borderWidth: 2,
+    borderBottomColor: '#123456',
+
     textAlign: 'center',
+    backgroundColor: '#1A2E41',
+    fontFamily: 'lucida grande',
     fontSize: 20
 
     // alignItems: 'flex-end'
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
   mainView: {
     flex: 1,
 
-    backgroundColor: '#15105E'
+    backgroundColor: '#1A2E41'
   }
 })
 export default CharacterScreen
