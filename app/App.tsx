@@ -12,7 +12,7 @@ const App = ({}) => {
 const styles = StyleSheet.create({
   textstyle: {
     fontSize: 36,
-    color: '#DDDDDD',
+    color: '#DDDDDD', //
     textAlign: 'center'
   }
 })

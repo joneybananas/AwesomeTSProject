@@ -33,7 +33,12 @@ const CharacterScreen = () => {
   useEffect(() => {
     getData(charID)
   }, [])
+
   if (char) {
+    const {
+      origin: { name: originName },
+      location: { name: locationName }
+    } = char
     return (
       <View style={styles.mainView}>
         <Text style={styles.nameText}>{char.name}</Text>

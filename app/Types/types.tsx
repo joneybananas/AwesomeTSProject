@@ -13,10 +13,16 @@ export type Origin = {
   url: string
 }
 
+export enum ChStatus {
+  ALIVE = 'Alive',
+  DEAD = 'Dead',
+  UNKONOWN = 'unknown'
+}
+
 export type Character = {
   id: number
   name: string
-  status: string
+  status: 'Alive' | 'Dead' | 'unknown'
   species: string
   type: string
   gender: string

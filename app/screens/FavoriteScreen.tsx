@@ -10,14 +10,14 @@ import { Post } from '../components/post'
 import fetchData from '../services/fetchData'
 import { Character, CharactersInformation, Information } from '../Types/types'
 
-const isCharactersInformation = (obj: any): obj is CharactersInformation => {
-  return obj.info
+const isCharactersInformation = (obj: CharactersInformation): boolean => {
+  return Boolean(obj.info)
 }
 
 const FavoriteScreen = () => {
   const [post, setPost] = useState<Character[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [isEmpty, setIsempty] = useState<boolean>(true)
+  const [isEmpty, setIsempty] = useState<boolean>(false)
   const [isFavoriteButttonChecked, setIsFavoriteButttonChecked] =
     useState(false)
 
@@ -25,21 +25,22 @@ const FavoriteScreen = () => {
     `${item.id}/${index}`
 
   const isFocused = useIsFocused()
+
+  useEffect(() => {
+    getFavoritesIdx()
+  }, [isFocused, isFavoriteButttonChecked])
+
   const getFavoritesIdx = async () => {
     try {
       const favoritesIdx = await getStorageData()
       console.log('GET', favoritesIdx)
       const favoritesChs = await fetchData<Character[]>(favoritesIdx)
-      if (isCharactersInformation(favoritesChs)) {
-        setIsempty(true)
+
+      if (Array.isArray(favoritesChs)) {
+        setPost(favoritesChs)
       } else {
-        setIsempty(false)
-        if (Array.isArray(favoritesChs)) {
-          setPost(favoritesChs)
-        } else {
-          console.log(favoritesChs)
-          setPost([favoritesChs])
-        }
+        console.log(favoritesChs)
+        setPost([favoritesChs])
       }
 
       setLoading(false)
@@ -49,12 +50,6 @@ const FavoriteScreen = () => {
       setPost([])
     }
   }
-
-  useEffect(() => {
-    console.log(isFavoriteButttonChecked, isFocused)
-    getFavoritesIdx
-    ;(isFocused || isFavoriteButttonChecked) && getFavoritesIdx()
-  }, [isFocused, isFavoriteButttonChecked])
 
   const getStorageData = async (): Promise<number[]> => {
     try {
@@ -72,12 +67,7 @@ const FavoriteScreen = () => {
     }
   }
 
-  const renderItem = ({ item }: { item: Character }) => (
-    <Post
-      person={item}
-      //setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
-    />
-  )
+  const renderItem = ({ item }: { item: Character }) => <Post person={item} />
 
   if (isEmpty) {
     return (
@@ -85,24 +75,24 @@ const FavoriteScreen = () => {
         <Text style={styles.emptyText}>Favorites empty</Text>
       </SafeAreaView>
     )
-  } else {
-    if (loading) {
-      return <ActivityIndicator />
-    } else {
-      return (
-        <SafeAreaView style={styles.background}>
-          <FlatList
-            style={styles.list}
-            data={post}
-            keyExtractor={keyExtractor}
-            refreshing={false}
-            onRefresh={getFavoritesIdx}
-            renderItem={renderItem}
-          />
-        </SafeAreaView>
-      )
-    }
   }
+
+  if (loading) {
+    return <ActivityIndicator />
+  }
+
+  return (
+    <SafeAreaView style={styles.background}>
+      <FlatList
+        style={styles.list}
+        data={post}
+        keyExtractor={keyExtractor}
+        refreshing={false}
+        onRefresh={getFavoritesIdx}
+        renderItem={renderItem}
+      />
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({

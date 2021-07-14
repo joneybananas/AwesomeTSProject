@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Character } from '../Types/types'
+import { Character, ChStatus } from '../Types/types'
 
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { Item } from 'react-native-paper/lib/typescript/components/List/List'
@@ -43,13 +43,11 @@ export const Post = React.memo(
             </Text>
           </View>
 
-          {
-            <MyButton
-              charID={person.id}
-              setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
-              update={update}
-            />
-          }
+          <MyButton
+            charID={person.id}
+            setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
+            update={update}
+          />
         </View>
       </TouchableOpacity>
     )

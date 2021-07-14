@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Character, CharactersInformation } from '../Types/types'
 import fetchData from './fetchData'
-const getArr = <T,>(elem: T): T[] => {
-  return [elem]
-}
 
 const useEffectPosts = () => {
   const [isLoading, setLoading] = useState(true)
@@ -12,11 +9,12 @@ const useEffectPosts = () => {
   const [maxpages, setMaxpages] = useState<number>(1)
 
   useEffect(() => {
-    fetchData<CharactersInformation>(page).then((ch) => {
-      setMaxpages(ch.info.pages)
-      setPost((prevPost) => prevPost.concat(ch.results))
+    fetchData<CharactersInformation>(page).then(({ info, results }) => {
+      // ch -> ??? {} = ch
+      setMaxpages(info.pages) //
+      setPost((prevPost) => prevPost.concat(results))
       setLoading(false)
-    })
+    }) // catch
   }, [page])
 
   const onEndReached = () => {
