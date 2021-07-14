@@ -24,7 +24,7 @@ import { Character, CharactersInformation } from '../Types/types'
 
 const MainScreen = () => {
   const isFocused = useIsFocused()
-  const { isLoading, post, onEndReached } = useFetch()
+  const { page, maxpages, isLoading, post, onEndReached, Refresh } = useFetch()
   const keyExtractor = (item: Character, index: number): string =>
     `${item.id}${index}`
 
@@ -35,6 +35,7 @@ const MainScreen = () => {
   if (isLoading) {
     return <ActivityIndicator />
   } else {
+    console.log('max:' + maxpages, ' page:' + page)
     return (
       <SafeAreaView style={styles.constainer}>
         <FlatList
@@ -44,18 +45,27 @@ const MainScreen = () => {
           keyExtractor={keyExtractor}
           onEndReached={onEndReached}
           onEndReachedThreshold={0.25}
+          refreshing={false}
+          onRefresh={Refresh}
+          ListFooterComponent={ListFooterComponent(maxpages, page)}
+          ListFooterComponentStyle={{ flexGrow: 1 }}
           renderItem={renderItem}></FlatList>
       </SafeAreaView>
     )
   }
 }
 
+const ListFooterComponent = (maxPage: number, curPage: number) => {
+  if (curPage < maxPage) {
+    return <ActivityIndicator color='#FFFFFF' size='large' />
+  }
+}
 // app->services->fetchData.tsx
 
 const styles = StyleSheet.create({
   constainer: {
-    flex: 1,
-    backgroundColor: '#1A2E41'
+    flex: 1
+    //backgroundColor: '#1A2E41'
   },
   list: {
     paddingTop: 5,

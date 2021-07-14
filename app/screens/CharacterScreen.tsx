@@ -10,6 +10,7 @@ import {
   ActivityIndicatorComponent,
   ActivityIndicator
 } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { RootStackParamList } from '../navigation/types'
 import fetchData from '../services/fetchData'
@@ -21,6 +22,7 @@ const CharacterScreen = () => {
   } = useRoute<RouteProp<RootStackParamList, 'CharacterScreen'>>()
 
   const [char, setChar] = useState<Character>()
+
   const getData = async (charID: number) => {
     try {
       const favoritesChs = await fetchData<Character>([charID])
@@ -35,7 +37,7 @@ const CharacterScreen = () => {
   }, [])
   if (char) {
     return (
-      <View style={styles.mainView}>
+      <ScrollView style={styles.mainView}>
         <Text style={styles.nameText}>{char.name}</Text>
         <View style={styles.constainer}>
           <Image source={{ uri: char.image }} style={styles.imagestyle}></Image>
@@ -61,7 +63,7 @@ const CharacterScreen = () => {
           <Text style={styles.headerText}>{'Location : '}</Text>
           <Text style={styles.propertyText}>{char.location.name}</Text>
         </View>
-      </View>
+      </ScrollView>
     )
   } else {
     return <ActivityIndicator />
@@ -123,6 +125,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlignVertical: 'center',
     borderWidth: 2,
+    padding: 10,
     borderBottomColor: '#123456',
 
     textAlign: 'center',

@@ -26,12 +26,9 @@ const fetchData = <T,>(
   return fetch(url, requestInit) // Promise
     .then((response) => response.json() as Promise<T>) // response->Promise
     .then((responseJSON) => {
-      // good response {}
-      //  console.log(responseJSON )
       return responseJSON
     })
     .catch((error) => {
-      // {message: string}
       console.log(error.message)
       return Promise.reject(error)
     })

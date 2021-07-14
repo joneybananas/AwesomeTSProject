@@ -62,22 +62,15 @@ const FavoriteScreen = () => {
       const favoritesIdx: number[] = favoritesIdxStr
         ? JSON.parse(favoritesIdxStr)
         : []
-      //setLoading(false)
       return favoritesIdx
     } catch (error) {
-      //setLoading(false)
       console.error(error)
 
       return []
     }
   }
 
-  const renderItem = ({ item }: { item: Character }) => (
-    <Post
-      person={item}
-      //setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
-    />
-  )
+  const renderItem = ({ item }: { item: Character }) => <Post person={item} />
 
   if (isEmpty) {
     return (

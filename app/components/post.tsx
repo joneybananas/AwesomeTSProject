@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Character } from '../Types/types'
+import { Character, ChStatus } from '../Types/types'
 
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { Item } from 'react-native-paper/lib/typescript/components/List/List'
@@ -37,19 +37,19 @@ export const Post = React.memo(
             <Text style={styles.nameText}>{person.name} </Text>
             <Text
               style={
-                person.status === 'Alive' ? styles.AliveText : styles.DeadText
+                person.status == ChStatus.ALIVE
+                  ? styles.AliveText
+                  : styles.DeadText
               }>
               {person.status}
             </Text>
           </View>
 
-          {
-            <MyButton
-              charID={person.id}
-              setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
-              update={update}
-            />
-          }
+          <MyButton
+            charID={person.id}
+            setIsFavoriteButttonChecked={setIsFavoriteButttonChecked}
+            update={update}
+          />
         </View>
       </TouchableOpacity>
     )
@@ -78,10 +78,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   nameText: {
+    marginStart: 10,
     fontSize: 20,
     fontStyle: 'normal',
     fontFamily: 'lucida grande'
   },
-  AliveText: { marginLeft: 10, color: '#6C67C7', fontWeight: 'bold' },
-  DeadText: { marginLeft: 10, color: '#93A9BF', fontWeight: 'bold' }
+  AliveText: { marginLeft: 15, color: '#6C67C7', fontWeight: 'bold' },
+  DeadText: { marginLeft: 15, color: '#93A9BF', fontWeight: 'bold' }
 })
